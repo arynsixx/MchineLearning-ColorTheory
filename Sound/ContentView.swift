@@ -90,29 +90,31 @@ struct ContentView: View {
             }
         }
     }
-//    func arrayText(level: Float) -> [String] {
-//        let level = max(0.2, CGFloat(level) + 50) / 2 // between 0.1 and 25
-//
-//        var text : [String]
-//        text.append(level == 0.1 ? "no audio" : startAudio.transcriberText)
-//
-//        return text
-//    }
-//
-//    func funcText(mic: MicrophoneMonitor(numberOfSamples: 10))-> String{
-//
-//        var text: String
-//        ForEach(mic.soundSamples, id: \.self){ level in
-//
-//            if arrayText(level: level) == ["no audio","no audio","no audio","no audio","no audio","no audio","no audio","no audio","no audio","no audio"]{
-//
-//                text = "parla più forte"
-//            } else {
-//                text = startAudio.transcriberText
-//            }
-//        }
-//        return text
-//    }
+    func arrayText(level: Float) -> [String] {
+        let level = max(0.2, CGFloat(level) + 50) / 2 // between 0.1 and 25
+
+        var text : [String]
+        text.append(level < 4 ? "no audio" : startAudio.transcriberText)
+
+        return text
+    }
+
+    func funcText()-> String{
+
+        var array : [String]
+        var text: String
+        
+        ForEach(mic.soundSamples, id: \.self){ level in
+
+            if arrayText(level: level) == ["no audio","no audio","no audio","no audio","no audio","no audio","no audio","no audio","no audio","no audio"]{
+
+                text = "parla più forte"
+            } else {
+                text = startAudio.transcriberText
+            }
+        }
+        return text
+    }
 }
 
 struct BarView: View {
