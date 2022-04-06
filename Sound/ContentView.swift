@@ -7,7 +7,6 @@
 
 
 import SwiftUI
-import simd
 
 let numberOfSamples: Int = 10
 
@@ -17,7 +16,6 @@ struct ContentView: View {
     @State var tap = false
     
     @ObservedObject var mic = MicrophoneMonitor(numberOfSamples: numberOfSamples)
-
     
     private func normalizeSoundLevel(level: Float) -> CGFloat {
         let level = max(0.2, CGFloat(level) + 50) / 2 // between 0.1 and 25
@@ -35,11 +33,11 @@ struct ContentView: View {
             Text("Emotions:")
                 .font(.title2)
             
-            CircleView(color: startAudio.color, tap: $tap/*, opacity: $opacity*/)
+            CircleView(color: startAudio.color,count: funcCount(), tap: $tap)
                 .frame(width: 300, height: 300)
                 .padding()
             
-            Text(tap == false ? "No audio" : startAudio.transcriberText)
+            Text(tap == false ? "No audio" : (funcCount() > 4 ? "speak louder please" : startAudio.transcriberText))
 
             Spacer()
             
@@ -61,7 +59,7 @@ struct ContentView: View {
                     HStack(spacing: 4) {
                         ForEach(0...9, id: \.self) { level in
 
-                            BarView(value: 2.0)
+                            BarView(value: 1.0)
                         }
                     }.padding()
                     
@@ -87,33 +85,41 @@ struct ContentView: View {
                         .frame(width: 70, height: 70)
                         .foregroundColor(.red)
                 }
-            }
+            }.padding()
         }
     }
-    func arrayText(level: Float) -> [String] {
+    func arrayLevel(level: Float) -> [Double] {
         let level = max(0.2, CGFloat(level) + 50) / 2 // between 0.1 and 25
+        
+        var arrayLevel : [Double] = []
+        arrayLevel.append(CGFloat(level * (200 / 25)))
 
-        var text : [String]
-        text.append(level < 4 ? "no audio" : startAudio.transcriberText)
-
-        return text
+        return arrayLevel
     }
 
-    func funcText()-> String{
+    func funcCount()-> Int{
 
-        var array : [String]
-        var text: String
+//        var text: String = ""
+        var count = 0
         
-        ForEach(mic.soundSamples, id: \.self){ level in
+        for level in mic.soundSamples{
 
-            if arrayText(level: level) == ["no audio","no audio","no audio","no audio","no audio","no audio","no audio","no audio","no audio","no audio"]{
+            for level2 in arrayLevel(level: level){
+                
+                if level2 < 50 {
 
-                text = "parla più forte"
-            } else {
-                text = startAudio.transcriberText
+                    count += 1
+                }
             }
+//            if count > 4 {
+//
+//                text = "speak louder please"
+//            } else {
+//
+//                text = startAudio.transcriberText
+//            }
         }
-        return text
+        return count
     }
 }
 
