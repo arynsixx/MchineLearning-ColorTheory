@@ -25,10 +25,6 @@ struct ContentView: View {
     
     var body: some View {
         VStack {
-            Text("Press the button to start listening")
-                .font(.largeTitle)
-                .fontWeight(.semibold)
-                .padding()
             
             Text("Emotions:")
                 .font(.title2)
@@ -86,6 +82,9 @@ struct ContentView: View {
                         .foregroundColor(.red)
                 }
             }.padding()
+            Text("Press the button to start!")
+                .font(.title3)
+                .fontWeight(.semibold)
         }
     }
     func arrayLevel(level: Float) -> [Double] {

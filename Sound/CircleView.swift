@@ -23,7 +23,7 @@ struct CircleView: View {
                        RadialGradient(colors: [tap == false || (tap == true && count > 4) ? .white : color, .white], center: .center, startRadius: animateGradient ? 100 : 0.5, endRadius: animateGradient ? 0.2 : 0.5)
                    )
                
-               if tap && color == .black{
+               if tap && color == .black && count < 4{
                
                Circle()
                    .stroke(Color.white, lineWidth: 5)
